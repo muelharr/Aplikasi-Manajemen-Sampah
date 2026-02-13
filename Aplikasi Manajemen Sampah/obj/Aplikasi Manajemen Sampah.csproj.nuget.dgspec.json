@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj": {}
+    "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj": {
+    "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
+        "projectUniqueName": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
         "projectName": "Aplikasi Manajemen Sampah",
-        "projectPath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
+        "projectPath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
         "packagesPath": "C:\\Users\\Rendra_aditya763\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\obj\\",
+        "outputPath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Rendra_aditya763\\AppData\\Roaming\\NuGet\\NuGet.Config",

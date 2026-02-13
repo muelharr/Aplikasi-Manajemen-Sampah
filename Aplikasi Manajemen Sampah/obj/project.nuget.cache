@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MZFqix4g2Zs=",
+  "dgSpecHash": "TxJ7++tvLGs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\baru\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
+  "projectFilePath": "C:\\Users\\Rendra_aditya763\\OneDrive\\Desktop\\Aplikasi-Manajemen-Sampah\\Aplikasi Manajemen Sampah\\Aplikasi Manajemen Sampah.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Rendra_aditya763\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Rendra_aditya763\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
