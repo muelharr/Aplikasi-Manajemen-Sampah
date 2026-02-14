@@ -5,7 +5,7 @@ using Aplikasi_Manajemen_Sampah.Models;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Aplikasi_Manajemen_Sampah.Services;
-using System.Collections.Generic; // Tambahkan ini untuk List
+using System.Collections.Generic;
 
 namespace Aplikasi_Manajemen_Sampah.Forms
 {
@@ -14,26 +14,61 @@ namespace Aplikasi_Manajemen_Sampah.Forms
         private User currentUser;
         private MongoService mongo;
         private string selectedId = "";
+        private bool isViewOnly = false; // TAMBAHAN: mode view only
 
-        public FormSampah(User user)
+        // TAMBAHAN: Constructor dengan parameter viewOnly
+        public FormSampah(User user, bool viewOnly = false)
         {
             this.currentUser = user;
+            this.isViewOnly = viewOnly; // Set mode view only
             InitializeComponent();
             mongo = new MongoService();
 
             if (dgvSampah != null) UIHelper.SetGridStyle(dgvSampah);
 
-            // 1. Panggil fungsi untuk mengisi data dropdown Jawa Barat
             IsiDataLokasiJawaBarat();
-
             SetupEvents();
             LoadData();
+
+            // TAMBAHAN: Jika view only, sembunyikan tombol edit
+            if (isViewOnly)
+            {
+                SetViewOnlyMode();
+            }
         }
 
-        // --- FUNGSI BARU: Mengisi Dropdown Wilayah Jabar ---
+        // TAMBAHAN: Method untuk set view only mode
+        private void SetViewOnlyMode()
+        {
+            // Ubah judul
+            this.Text = "Data Sampah (View Only)";
+            this.lblTitle.Text = "Data Sampah 👁️";
+
+            // Sembunyikan panel input (form input di kiri)
+            if (panelInput != null)
+            {
+                panelInput.Visible = false;
+            }
+
+            // Perbesar DataGridView untuk fullscreen
+            if (dgvSampah != null)
+            {
+                dgvSampah.Location = new Point(25, 70);
+                dgvSampah.Size = new Size(1130, 500);
+            }
+
+            // Tambah label info
+            Label lblInfo = new Label();
+            lblInfo.Text = "ℹ️ Anda hanya dapat melihat data. Hubungi admin untuk perubahan data.";
+            lblInfo.Font = new Font("Segoe UI", 10F);
+            lblInfo.ForeColor = Color.Gray;
+            lblInfo.Location = new Point(25, 580);
+            lblInfo.Size = new Size(600, 20);
+            this.Controls.Add(lblInfo);
+        }
+
         private void IsiDataLokasiJawaBarat()
         {
-            // Pastikan cboLokasi sudah dibuat di Designer
             cboLokasi.Items.Clear();
 
             string[] wilayahJabar = {
@@ -60,7 +95,7 @@ namespace Aplikasi_Manajemen_Sampah.Forms
             };
 
             cboLokasi.Items.AddRange(wilayahJabar);
-            cboLokasi.SelectedIndex = 0; // Pilih default yang pertama
+            cboLokasi.SelectedIndex = 0;
         }
 
         private void SetupEvents()
@@ -91,10 +126,16 @@ namespace Aplikasi_Manajemen_Sampah.Forms
 
         private async void BtnSimpan_Click(object sender, EventArgs e)
         {
-            // Validasi Input (txtLokasi diganti cboLokasi)
+            // TAMBAHAN: Cek jika view only, tidak boleh simpan
+            if (isViewOnly)
+            {
+                MessageBox.Show("Anda tidak memiliki izin untuk mengubah data!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(txtNama.Text) ||
                 string.IsNullOrWhiteSpace(txtBerat.Text) ||
-                cboLokasi.SelectedIndex == -1) // Cek apakah lokasi dipilih
+                cboLokasi.SelectedIndex == -1)
             {
                 MessageBox.Show("Nama, Berat, dan Lokasi wajib diisi!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -107,14 +148,9 @@ namespace Aplikasi_Manajemen_Sampah.Forms
             }
 
             string jenis = cboJenis.SelectedItem?.ToString() ?? "Organik";
-
-            // Ambil text dari dropdown lokasi
             string lokasiTerpilih = cboLokasi.SelectedItem.ToString();
             string catatanOtomatis = "";
 
-            // --- Logic ---
-
-            // 1. Peringatan Limbah B3
             if (jenis == "B3")
             {
                 var confirm = MessageBox.Show("⚠️ PERINGATAN LIMBAH B3!\nPastikan penanganan sesuai prosedur K3.\nLanjutkan?",
@@ -122,13 +158,11 @@ namespace Aplikasi_Manajemen_Sampah.Forms
                 if (confirm == DialogResult.No) return;
             }
 
-            // 2. Auto-Note Daur Ulang
             if (jenis == "DaurUlang")
             {
                 catatanOtomatis = " Perlu Dipisahkan (Daur Ulang)";
             }
 
-            // 3. Peringatan Kapasitas
             if (beratKg >= 100)
             {
                 MessageBox.Show("⚠️ KAPASITAS TINGGI DETEKSI!\nBerat > 100kg. Harap segera jadwalkan penjemputan.",
@@ -143,7 +177,7 @@ namespace Aplikasi_Manajemen_Sampah.Forms
                     Nama = txtNama.Text,
                     Jenis = jenis,
                     BeratKg = beratKg,
-                    Lokasi = lokasiTerpilih, // Simpan dari dropdown
+                    Lokasi = lokasiTerpilih,
                     TanggalMasuk = DateTime.Now,
                     InputBy = currentUser.Username,
                     Catatan = catatanOtomatis
@@ -168,13 +202,19 @@ namespace Aplikasi_Manajemen_Sampah.Forms
 
         private async void BtnHapus_Click(object sender, EventArgs e)
         {
+            // TAMBAHAN: Cek jika view only, tidak boleh hapus
+            if (isViewOnly)
+            {
+                MessageBox.Show("Anda tidak memiliki izin untuk menghapus data!", "Akses Ditolak", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (string.IsNullOrEmpty(selectedId))
             {
                 MessageBox.Show("Pilih data dulu!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // Verifikasi Hapus B3
             if (cboJenis.SelectedItem?.ToString() == "B3")
             {
                 if (MessageBox.Show("Hapus data B3 butuh verifikasi. Lanjutkan?", "Hapus B3", MessageBoxButtons.YesNo) == DialogResult.No) return;
@@ -190,6 +230,9 @@ namespace Aplikasi_Manajemen_Sampah.Forms
 
         private void DgvSampah_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // TAMBAHAN: Jika view only, tidak perlu isi form input
+            if (isViewOnly) return;
+
             if (e.RowIndex < 0) return;
 
             var row = dgvSampah.Rows[e.RowIndex];
@@ -197,7 +240,6 @@ namespace Aplikasi_Manajemen_Sampah.Forms
             txtNama.Text = row.Cells["Nama"].Value?.ToString();
             txtBerat.Text = row.Cells["BeratKg"].Value?.ToString();
 
-            // --- Logic baru untuk Lokasi (Dropdown) ---
             string lokasiDb = row.Cells["Lokasi"].Value?.ToString();
             if (lokasiDb != null && cboLokasi.Items.Contains(lokasiDb))
             {
@@ -205,11 +247,8 @@ namespace Aplikasi_Manajemen_Sampah.Forms
             }
             else
             {
-                // Jika lokasi di database tidak ada di list (misal data lama), tambahkan sementara atau pilih index 0
-                // Opsi aman: Pilih index 0 atau biarkan kosong
                 cboLokasi.Text = lokasiDb;
             }
-            // ------------------------------------------
 
             string jenis = row.Cells["Jenis"].Value?.ToString();
             if (cboJenis.Items.Contains(jenis)) cboJenis.SelectedItem = jenis;
@@ -224,7 +263,6 @@ namespace Aplikasi_Manajemen_Sampah.Forms
             txtNama.Clear();
             txtBerat.Clear();
 
-            // Reset Dropdown Lokasi
             if (cboLokasi.Items.Count > 0) cboLokasi.SelectedIndex = 0;
 
             cboJenis.SelectedIndex = 0;

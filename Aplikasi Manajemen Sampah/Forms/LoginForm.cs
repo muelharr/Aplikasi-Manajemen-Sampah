@@ -18,14 +18,12 @@ namespace Aplikasi_Manajemen_Sampah
         {
             InitializeComponent();
             authService = new AuthService();
-
             SetupEvents();
             InitializeCustomDesign();
         }
 
         private void InitializeCustomDesign()
         {
-            // Warna latar input agar menyatu dengan Glass Panel
             Color inputBackground = Color.FromArgb(30, 30, 30);
 
             if (pnlUsernameContainer is BorderedPanel pnlUser) pnlUser.FillColor = inputBackground;
@@ -44,7 +42,7 @@ namespace Aplikasi_Manajemen_Sampah
             SetPlaceholder(txtPassword, PassPlaceholder);
             txtPassword.UseSystemPasswordChar = false;
 
-            this.ActiveControl = lblTitle; // Fokus awal ke Label
+            this.ActiveControl = lblTitle;
         }
 
         private void SetupEvents()
@@ -52,7 +50,6 @@ namespace Aplikasi_Manajemen_Sampah
             this.Resize += (s, e) => CenterPanel();
             this.Load += (s, e) => CenterPanel();
 
-            // Logika Placeholder
             txtUsername.Enter += (s, e) => { if (txtUsername.Text == UserPlaceholder) RemovePlaceholder(txtUsername); };
             txtUsername.Leave += (s, e) => { if (string.IsNullOrWhiteSpace(txtUsername.Text)) SetPlaceholder(txtUsername, UserPlaceholder); };
 
@@ -75,8 +72,6 @@ namespace Aplikasi_Manajemen_Sampah
             };
 
             btnLogin.Click += btnLogin_Click;
-
-            // Enter key shortcut
             txtUsername.KeyPress += Txt_KeyPress;
             txtPassword.KeyPress += Txt_KeyPress;
         }
@@ -117,7 +112,8 @@ namespace Aplikasi_Manajemen_Sampah
             if (username == UserPlaceholder || string.IsNullOrWhiteSpace(username) ||
                 password == PassPlaceholder || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Harap isi Username dan Password!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Harap isi Username dan Password!", "Peringatan",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -137,12 +133,14 @@ namespace Aplikasi_Manajemen_Sampah
                 }
                 else
                 {
-                    MessageBox.Show("Username atau Password salah!", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Username atau Password salah!", "Login Gagal",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Terjadi kesalahan sistem: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Terjadi kesalahan sistem: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

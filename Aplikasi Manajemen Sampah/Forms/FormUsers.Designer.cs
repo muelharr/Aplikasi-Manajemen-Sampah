@@ -128,7 +128,7 @@
             this.cboRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboRole.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cboRole.FormattingEnabled = true;
-            this.cboRole.Items.AddRange(new object[] { "Petugas", "Admin" });
+            this.cboRole.Items.AddRange(new object[] { "Petugas", "Admin", "Masyarakat" });
             this.cboRole.Location = new System.Drawing.Point(20, 180);
             this.cboRole.Name = "cboRole";
             this.cboRole.Size = new System.Drawing.Size(280, 25);
