@@ -1,3 +1,27 @@
-.vs/ 
-bin/ 
-obj/ 
+ ## Visual Studio Build Outputs
+[Bb]in/
+[Oo]bj/
+[Tt]est[搁]esults/
+
+## Visual Studio user-specific files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+## Build results
+*.exe
+*.dll
+*.pdb
+*.msi
+*.nupkg
+
+## NuGet Packages
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+## OS generated files
+.DS_Store
+Thumbs.db
