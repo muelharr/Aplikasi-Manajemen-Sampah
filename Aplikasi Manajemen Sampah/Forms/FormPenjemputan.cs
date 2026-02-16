@@ -69,11 +69,7 @@ namespace Aplikasi_Manajemen_Sampah.Forms
 
         private void SetupEvents()
         {
-            btnSimpan.Click += BtnSimpan_Click;
-            btnHapus.Click += BtnHapus_Click;
-            btnClear.Click += (s, e) => ClearInputs();
-            dgvPenjemputan.CellClick += DgvPenjemputan_CellClick;
-            cboStatus.SelectedIndexChanged += CboStatus_SelectedIndexChanged;
+            
 
             cboStatus.SelectedIndex = 0;
             this.FormClosing += (s, e) => DisposeIcons();
@@ -377,7 +373,7 @@ namespace Aplikasi_Manajemen_Sampah.Forms
                 SampahID = sId,
                 PetugasID = pId,
                 TanggalJadwal = dtpTanggalJadwal.Value,
-                Status = cboStatus.SelectedItem.ToString(),
+                Status = cboStatus.Text,
                 Catatan = txtCatatan.Text
             };
 
